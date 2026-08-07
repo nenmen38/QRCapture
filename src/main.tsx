@@ -164,8 +164,8 @@ function App() {
             return;
           }
 
-          if (error && !isNotFoundError(error)) {
-            setCameraError("Something went wrong while reading the camera feed.");
+          if (error) {
+            return;
           }
         },
       );
@@ -195,7 +195,7 @@ function App() {
 
   return (
     <main className="app-shell">
-      <section className="scanner" aria-label="QR scanner">
+      <section className={`scanner ${result ? "is-blurred" : ""}`} aria-label="QR scanner">
         <header className="app-header">
         </header>
         <button
@@ -254,9 +254,12 @@ function App() {
 
         {cameraError ? <p className="error-text">{cameraError}</p> : null}
 
-        {result ? (
+      </section>
+
+      {result ? (
+        <div className="result-overlay" role="dialog" aria-modal="true" aria-labelledby="scan-result-title">
           <div className="result-panel">
-            <span className="result-label">Scan Result</span>
+            <span className="result-label" id="scan-result-title">Scan Result</span>
             <p>{result}</p>
             <div className="result-actions">
               <button type="button" onClick={() => void copyResult()}>
@@ -286,8 +289,8 @@ function App() {
               </button>
             </div>
           </div>
-        ) : null}
-      </section>
+        </div>
+      ) : null}
     </main>
   );
 }
